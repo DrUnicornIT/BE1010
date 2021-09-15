@@ -2,7 +2,7 @@ const express = require('express')
 const storage = require('node-persist')
 const app = express()
 app.use(express.urlencoded({extended: false}))
-const port = 3000
+const port = 3500
 
 var timestamp = new Date().getTime()
 timestamp = (timestamp - timestamp % 1000) / 1000
@@ -44,7 +44,7 @@ app.get('/logs', function(req, res) {
     const limit = req.query.limit;
     if(limit === undefined) {
         res.send(`
-            <h1> Level </h1>
+            <h1> Data </h1>
             <form action="/done" method="POST">
                 <input type="text" name="level" placeholder="level">   
                 <input type="text" name="message" placeholder="message">    
