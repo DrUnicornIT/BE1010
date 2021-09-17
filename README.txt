@@ -1,5 +1,5 @@
 Open Terminal
-    $ node main.js
+    $ npm start
 
 Timestamp : http://localhost:3500/timestamp
 Logs : http://localhost:3500/logs
