@@ -1,4 +1,5 @@
 Open Terminal
+    $ npm install
     $ npm start
 
 Timestamp : http://localhost:3500/timestamp
