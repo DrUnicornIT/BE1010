@@ -4,8 +4,7 @@ const app = express()
 app.use(express.urlencoded({extended: false}))
 const port = 3500
 
-var timestamp = new Date().getTime()
-timestamp = (timestamp - timestamp % 1000) / 1000
+
 
 storage.init({
     dir: 'savelog',
@@ -36,6 +35,8 @@ async function addLog(level, message) {
 }
 
 app.get('/timestamp', (req, res)=>{
+    var timestamp = new Date().getTime()
+    timestamp = (timestamp - timestamp % 1000) / 1000
     res.send({timestamp})
 })
 
