@@ -1,14 +1,18 @@
 const express = require('express')
 const storage = require('node-persist')
 const app = express()
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 const port = 3500
-
-
 
 storage.init({
     dir: 'savelog',
 });
+
+function timestampnow() {
+    return Math.floor((new Date())/1000);
+}
   
 async function getAllLogs() {
     let allLogs = await storage.getItem('Logs');
@@ -21,12 +25,10 @@ async function getAllLogs() {
   
 async function addLog(level, message) {
     let allLogs = await getAllLogs();
-    var timestampnow = new Date().getTime()
-    timestampnow = (timestampnow - timestampnow%1000)/1000
 
     allLogs.push({
         ID : allLogs.length + 1,
-        timestampnow: timestampnow,
+        timestampnow: timestampnow(),
         level: level,
         message: message
     });
@@ -35,37 +37,24 @@ async function addLog(level, message) {
 }
 
 app.get('/timestamp', (req, res)=>{
-    var timestamp = new Date().getTime()
-    timestamp = (timestamp - timestamp % 1000) / 1000
-    res.send({timestamp})
+    const timestamp = timestampnow()
+    res.json({timestamp})
 })
 
-app.get('/logs', function(req, res) {
+app.get('/logs', (req, res) => {
+    console.log("GeT");
     const limit = req.query.limit;
-    if(limit === undefined) {
-        res.send(`
-            <h1> Data </h1>
-            <form action="/done" method="POST">
-                <input type="text" name="level" placeholder="level">   
-                <input type="text" name="message" placeholder="message">    
-                <button> Submit </button>
-            </form>
-        `)
-    } else {
-        storage.getItem('Logs').then(values => {
-            let logs = values.slice(-limit)
-            res.send(JSON.stringify({logs}, null, 4))
-        })
-    }
-    
+    storage.getItem('Logs').then(values => {
+        let logs = values.slice(-limit)
+        res.send(JSON.stringify({logs}, null, 4))
+    })
 });
 
-app.post('/done', (req, res)=> {
+app.post('/logs', (req, res)=> {
     addLog(req.body.level, req.body.message)
-    res.send("Thanks for nothings")
+    .then(() => res.json())
+    .catch(() => res.json({error:1}));
 })
-app.get('/done', (req, res)=> {
-    res.send("404 :D")
-})
+
 
 app.listen(port)
