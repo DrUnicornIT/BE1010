@@ -12,7 +12,7 @@ Fix : change port(main.js:5)
 
 Fix Part 1 : 
 
-- Không nên commit thư mục node_modules                                     : Em ko hiểu cái này nghĩa là gì ạ
+- Không nên commit thư mục node_modules                                     : Done
 - Nên khởi chạy server bằng npm start                                       : Done
 - Indentation cần phải thống nhất hơn                                       : Done 
 - Timestamp phải là timestamp lúc truy vấn, không phải timestamp cố định    : Done
